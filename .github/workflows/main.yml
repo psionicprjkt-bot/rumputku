@@ -1,0 +1,48 @@
+# Copyright (C) 2024 officialputuid
+
+name: getgrass-bot
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+  schedule:
+    - cron: '0 23 * * *' # 7 AM (WITA)
+
+jobs:
+  getgrass:
+    runs-on: ubuntu-latest
+    env:
+      BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+      CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+    timeout-minutes: 348
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set ENV
+        id: set_env
+        run: |
+          sudo apt update -y
+          sudo apt install -y nodejs npm
+          echo "DATE_TIME=$(TZ='Asia/Makassar' date '+%Y-%m-%d %H:%M:%S %Z')" >> $GITHUB_ENV
+
+      - name: Notify Start
+        run: curl -s -X POST "https://api.telegram.org/bot$BOT_TOKEN/sendMessage" -d chat_id=$CHAT_ID -d text="[getgrass-bot] Workflow has started. ($DATE_TIME)"
+
+      - name: Setup and Run
+        run: |
+          npm install
+          echo -e "${{ secrets.UID01 }}\n${{ secrets.UID02 }}\n${{ secrets.UID03 }}" > uid.txt
+          wget -O proxy-1.txt ${{ secrets.RAW_PROXY01 }}
+          wget -O proxy-2.txt ${{ secrets.RAW_PROXY02 }}
+          wget -O proxy-3.txt ${{ secrets.RAW_PROXY03 }}
+          wget -O proxy-4.txt ${{ secrets.RAW_PROXY04 }}
+          cat proxy-1.txt proxy-2.txt proxy-3.txt proxy-4.txt >> proxy.txt
+          rm -rf proxy-*.txt
+          npm start
+
+      - name: Notify Completion
+        if: always()
+        run: curl -s -X POST "https://api.telegram.org/bot$BOT_TOKEN/sendMessage" -d chat_id=$CHAT_ID -d text="[getgrass-bot] Workflow has completed. ($DATE_TIME)"
