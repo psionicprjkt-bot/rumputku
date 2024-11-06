@@ -40,7 +40,13 @@ jobs:
           wget -O proxy-2.txt ${{ secrets.RAW_PROXY02 }}
           wget -O proxy-3.txt ${{ secrets.RAW_PROXY03 }}
           wget -O proxy-4.txt ${{ secrets.RAW_PROXY04 }}
-          cat proxy-1.txt proxy-2.txt proxy-3.txt proxy-4.txt >> proxy.txt
+          wget -O proxy-5.txt ${{ secrets.RAW_PROXY05 }}
+          wget -O proxy-6.txt ${{ secrets.RAW_PROXY06 }}
+          wget -O proxy-7.txt ${{ secrets.RAW_PROXY07 }}
+          wget -O proxy-8.txt ${{ secrets.RAW_PROXY08 }}
+          wget -O proxy-9.txt ${{ secrets.RAW_PROXY09 }}
+          wget -O proxy-10.txt ${{ secrets.RAW_PROXY10 }}
+          cat proxy-1.txt proxy-2.txt proxy-3.txt proxy-4.txt proxy-5.txt proxy-6.txt proxy-7.txt proxy-8.txt proxy-9.txt proxy-10.txt >> proxy.txt
           rm -rf proxy-*.txt
           npm start
 
