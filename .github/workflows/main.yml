@@ -16,7 +16,6 @@ jobs:
     env:
       BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
       CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
-    timeout-minutes: 348
 
     steps:
       - name: Checkout repository
@@ -34,6 +33,7 @@ jobs:
 
       - name: Setup and Run
         continue-on-error: true
+        timeout-minutes: 348
         run: |
           npm install
           echo -e "${{ secrets.UID01 }}\n${{ secrets.UID02 }}\n${{ secrets.UID03 }}\n${{ secrets.UID04 }}\n${{ secrets.UID05 }}" > uid.txt
